@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Trading Journal</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <h1 class="mb-1">Trading Journal</h1>
+            <p class="text-muted">Log your trades, review performance, and get AI insights on your psychology.</p>
+          </div>
+          <button class="btn btn-primary" onclick="document.getElementById('add-trade-modal').style.display='flex'">
+            <i class="fas fa-plus"></i> Log Trade
+          </button>
+        </div>
+
+        <!-- Performance Stats -->
+        <div class="grid grid-4 mb-4">
+          <div class="card p-3">
+             <div class="text-muted text-sm mb-1">Total Trades</div>
+             <div class="text-2xl fw-bold" id="jnl-total">0</div>
+          </div>
+          <div class="card p-3">
+             <div class="text-muted text-sm mb-1">Win Rate</div>
+             <div class="text-2xl fw-bold" id="jnl-winrate">0%</div>
+          </div>
+          <div class="card p-3">
+             <div class="text-muted text-sm mb-1">Net PnL</div>
+             <div class="text-2xl fw-bold" id="jnl-pnl">$0.00</div>
+          </div>
+          <div class="card p-3">
+             <div class="text-muted text-sm mb-1">Best Asset</div>
+             <div class="text-2xl fw-bold text-green" id="jnl-best">-</div>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-4">
+          <!-- Main Table -->
+          <div class="card" style="grid-column: span 2; padding: 0; overflow: hidden; display:flex; flex-direction:column;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);" class="d-flex justify-between align-center">
+              <h3 class="fw-bold">Recent Entries</h3>
+              <div class="d-flex gap-2">
+                 <button class="btn btn-secondary btn-sm" id="jnl-filter-all" class="active">All</button>
+                 <button class="btn btn-secondary btn-sm" id="jnl-filter-win">Wins</button>
+                 <button class="btn btn-secondary btn-sm" id="jnl-filter-loss">Losses</button>
+              </div>
+            </div>
+            <div class="table-responsive" style="border:none; border-radius:0; flex:1;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Asset</th>
+                    <th>Direction</th>
+                    <th>Setup</th>
+                    <th class="text-right">R/R</th>
+                    <th class="text-right">PnL</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="journal-tbody">
+                  <tr><td colspan="7" class="text-center py-5 text-muted">No trades logged yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- AI Performance Coach -->
+          <div class="card d-flex flex-column" style="background: linear-gradient(135deg, rgba(10,10,10,1) 0%, rgba(30,20,50,0.4) 100%); border: 1px solid rgba(168, 85, 247, 0.3);">
+            <div class="d-flex align-center gap-2 mb-3">
+               <i class="fas fa-brain text-lg" style="color: #a855f7;"></i>
+               <h3 class="fw-bold">AI Coach Review</h3>
+            </div>
+            <p class="text-muted text-sm mb-4">Groq analyzes your journal notes and outcomes to detect emotional biases and setup flaws.</p>
+            
+            <div id="ai-coach-output" class="flex-1 d-flex flex-column justify-center">
+               <div class="text-muted text-center" style="opacity: 0.6;">
+                 <i class="fas fa-magic mb-3 text-2xl"></i><br>
+                 Log at least 3 trades with detailed notes to unlock AI psychological profiling.
+               </div>
+            </div>
+
+            <button class="btn btn-outline btn-block mt-4" id="btn-coach-review" style="border-color: #a855f7; color: #a855f7;">
+               Generate Weekly Review
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Trade Modal -->
+  <div id="add-trade-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(5px); z-index:999; align-items:center; justify-content:center; padding:1rem;">
+     <div class="card" style="width:100%; max-width:600px; max-height: 90vh; overflow-y: auto;">
+        <div class="d-flex justify-between align-center mb-4">
+           <h3 class="fw-bold">Log New Trade</h3>
+           <button class="btn btn-secondary btn-sm" onclick="document.getElementById('add-trade-modal').style.display='none'" style="border:none; background:transparent;">
+             <i class="fas fa-times text-lg"></i>
+           </button>
+        </div>
+        
+        <form id="add-trade-form">
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Asset</label>
+              <input type="text" id="trd-asset" class="form-control" placeholder="BTC/USDT" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Direction</label>
+              <select id="trd-dir" class="form-control" required>
+                <option value="LONG">Long</option>
+                <option value="SHORT">Short</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="grid grid-3">
+            <div class="form-group">
+              <label class="form-label">Entry Price</label>
+              <input type="number" id="trd-entry" class="form-control" step="any" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Exit Price</label>
+              <input type="number" id="trd-exit" class="form-control" step="any" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">PnL ($)</label>
+              <input type="number" id="trd-pnl" class="form-control" step="any" required>
+            </div>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Setup Type</label>
+              <select id="trd-setup" class="form-control">
+                <option value="Breakout">Breakout</option>
+                <option value="Pullback">Pullback</option>
+                <option value="Reversal">Reversal</option>
+                <option value="Range">Range Trading</option>
+                <option value="News">News Driven</option>
+                <option value="FOMO">FOMO / Emotion</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date/Time</label>
+              <input type="datetime-local" id="trd-date" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Psychology & Notes (Crucial for AI)</label>
+            <textarea id="trd-notes" class="form-control" rows="4" placeholder="How did you feel? Did you stick to the plan? Why did you enter/exit when you did?"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block mt-2">Save Trade to Journal</button>
+        </form>
+     </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="journal.js"></script>
+</body>
+</html>

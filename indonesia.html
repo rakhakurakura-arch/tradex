@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Pasar Indonesia</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .crypto-tax-card { background: var(--bg-surface); border: 1px solid var(--border); padding: 1.5rem; border-radius: 12px; }
+  </style>
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content" style="max-width: 1000px; margin: 0 auto;">
+        
+        <div class="d-flex justify-between align-center mb-5 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-red mb-2 text-white"><i class="fas fa-flag"></i> LOKAL IDR</div>
+            <h1 class="mb-1">Pasar Kripto Indonesia</h1>
+            <p class="text-muted">Pantau harga real-time dalam Rupiah (IDR) dan berita lokal.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <span class="text-sm">Nilai Tukar Default: <strong id="usd-idr-rate">Rp 15,500 / USD</strong></span>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-4">
+           <div class="card p-4 text-center">
+              <div class="text-muted text-sm mb-1">Total Kapitalisasi (IDR)</div>
+              <h2 class="fw-bold mb-0 text-lg" id="idr-mcap">Menghitung...</h2>
+           </div>
+           <div class="card p-4 text-center">
+              <div class="text-muted text-sm mb-1">Volume 24 Jam (IDR)</div>
+              <h2 class="fw-bold mb-0 text-lg" id="idr-vol">Menghitung...</h2>
+           </div>
+           <div class="card p-4 text-center" style="background: linear-gradient(45deg, rgba(236,72,153,0.1), rgba(255,255,255,0.05)); border: 1px solid var(--border);">
+              <div class="text-muted text-sm mb-1">Sentimen Lokal</div>
+              <h2 class="fw-bold mb-0 text-lg text-green">Bullish (Akumulasi)</h2>
+           </div>
+        </div>
+
+        <div class="grid grid-2 gap-4 mb-4">
+           <!-- Kalkulator Pajak -->
+           <div class="crypto-tax-card">
+              <h3 class="fw-bold mb-3"><i class="fas fa-calculator mr-2 text-yellow"></i> Kalkulator Pajak Kripto (PPh + PPN)</h3>
+              <p class="text-sm text-muted mb-3">Estimasi pajak transaksi kripto di bursa terdaftar Bappebti (0.21%).</p>
+              <div class="form-group">
+                 <label class="form-label">Nilai Transaksi (IDR)</label>
+                 <input type="number" id="tax-input" class="form-control" placeholder="1000000">
+              </div>
+              <div class="d-flex justify-between mt-3 text-sm border-top pt-2">
+                 <span>Estimasi Pajak Final:</span>
+                 <strong id="tax-result" class="text-red">Rp 0</strong>
+              </div>
+           </div>
+
+           <!-- USD/IDR Converter -->
+           <div class="crypto-tax-card">
+              <h3 class="fw-bold mb-3"><i class="fas fa-exchange-alt mr-2 text-blue"></i> USD / IDR Converter</h3>
+              <div class="grid grid-2 gap-2">
+                 <div class="form-group mb-0">
+                    <label class="form-label">USD ($)</label>
+                    <input type="number" id="conv-usd" class="form-control" placeholder="100">
+                 </div>
+                 <div class="form-group mb-0">
+                    <label class="form-label">IDR (Rp)</label>
+                    <input type="number" id="conv-idr" class="form-control" placeholder="1550000">
+                 </div>
+              </div>
+           </div>
+        </div>
+
+        <!-- Exchange Comparison -->
+        <div class="card mb-4 p-0" style="overflow: hidden;">
+           <div class="p-3 border-bottom bg-secondary">
+              <h3 class="fw-bold text-sm"><i class="fas fa-building mr-2 text-purple"></i> Perbandingan Harga Bursa Lokal (BTC/IDR)</h3>
+           </div>
+           <div class="d-flex justify-between p-3 gap-3 flex-wrap" id="exchange-compare">
+              <!-- JS Populated -->
+              <div class="text-center flex-1">
+                 <div class="text-muted text-sm">Indodax</div>
+                 <div class="fw-bold text-lg" id="exc-indodax">Memuat...</div>
+              </div>
+              <div class="text-center flex-1" style="border-left: 1px solid var(--border); border-right: 1px solid var(--border);">
+                 <div class="text-muted text-sm">Tokocrypto</div>
+                 <div class="fw-bold text-lg" id="exc-toko">Memuat...</div>
+              </div>
+              <div class="text-center flex-1">
+                 <div class="text-muted text-sm">Pintu</div>
+                 <div class="fw-bold text-lg" id="exc-pintu">Memuat...</div>
+              </div>
+           </div>
+        </div>
+
+        <div class="card p-0" style="overflow: hidden;">
+           <div class="p-4 border-bottom d-flex justify-between align-center flex-wrap gap-2">
+              <h3 class="fw-bold">Harga Rupiah (Top 20)</h3>
+              <div class="form-group mb-0" style="max-width: 250px;">
+                 <input type="text" id="idr-search" class="form-control btn-sm" placeholder="Cari aset...">
+              </div>
+           </div>
+           <div class="table-responsive" style="border:none; border-radius:0;">
+              <table>
+                 <thead>
+                    <tr>
+                       <th>Aset</th>
+                       <th class="text-right">Harga (IDR)</th>
+                       <th class="text-right">Perubahan 24j</th>
+                       <th class="text-right d-none-mobile">Volume (IDR)</th>
+                       <th class="text-center">Aksi</th>
+                    </tr>
+                 </thead>
+                 <tbody id="idr-tbody">
+                    <tr><td colspan="5" class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin mr-2"></i> Mengambil data dari global proxy...</td></tr>
+                 </tbody>
+              </table>
+           </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="indonesia.js"></script>
+</body>
+</html>

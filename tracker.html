@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Live Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <div id="sidebar-container"></div>
+    
+    <div class="main-wrapper">
+      
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4">
+          <div>
+            <h1 class="mb-1">Live Market Tracker</h1>
+            <p class="text-muted">Real-time cryptocurrency prices and trends</p>
+          </div>
+          <div>
+            <div class="badge badge-secondary" style="background:var(--bg-card); border:1px solid var(--border);">
+              Next refresh in <span id="refresh-countdown" class="text-green fw-bold ml-1">30</span>s
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4" style="padding: 1rem 1.5rem;">
+          <div class="d-flex justify-between align-center flex-wrap gap-3">
+             <div class="d-flex gap-2">
+               <button class="btn btn-primary btn-sm" id="filter-all">All Coins</button>
+               <button class="btn btn-secondary btn-sm" id="filter-gainers">Gainers</button>
+               <button class="btn btn-secondary btn-sm" id="filter-losers">Losers</button>
+             </div>
+             
+             <div style="position: relative; width: 300px;">
+                <i class="fas fa-search" style="position: absolute; left: 1rem; top: 0.8rem; color: var(--text-muted)"></i>
+                <input type="text" id="tracker-search" class="form-control" style="padding-left: 2.5rem; padding-top: 0.6rem; padding-bottom: 0.6rem; border-radius: 20px;" placeholder="Search by name or symbol...">
+             </div>
+          </div>
+        </div>
+
+        <div class="card p-0" style="overflow: hidden;">
+          <div class="table-responsive">
+            <table id="tracker-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">#</th>
+                  <th>Coin</th>
+                  <th class="text-right">Price (USD)</th>
+                  <th class="text-right">1h %</th>
+                  <th class="text-right">24h %</th>
+                  <th class="text-right hide-mobile">7d %</th>
+                  <th class="text-right hide-mobile">Market Cap</th>
+                  <th class="text-right hide-mobile">Volume (24h)</th>
+                  <th class="text-center" style="width: 150px;">Last 7 Days</th>
+                </tr>
+              </thead>
+              <tbody id="tracker-tbody">
+                <!-- Data injected by JS -->
+                <tr><td colspan="9" class="text-center py-3"><div class="skeleton skeleton-text"></div></td></tr>
+                <tr><td colspan="9" class="text-center py-3"><div class="skeleton skeleton-text"></div></td></tr>
+                <tr><td colspan="9" class="text-center py-3"><div class="skeleton skeleton-text"></div></td></tr>
+                <tr><td colspan="9" class="text-center py-3"><div class="skeleton skeleton-text"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <!-- Tiny sparkline utility script instead of huge chartjs instances for rows -->
+  <script>
+    // Inline utility to draw sparkline on canvas
+    function drawSparkline(canvasId, dataPoints, isPositive) {
+      const canvas = document.getElementById(canvasId);
+      if(!canvas || !dataPoints || dataPoints.length === 0) return;
+      
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const min = Math.min(...dataPoints);
+      const max = Math.max(...dataPoints);
+      const range = max - min || 1;
+      
+      const color = isPositive ? 
+        getComputedStyle(document.documentElement).getPropertyValue('--accent-green').trim() : 
+        getComputedStyle(document.documentElement).getPropertyValue('--accent-red').trim();
+        
+      ctx.clearRect(0, 0, w, h);
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      
+      dataPoints.forEach((point, i) => {
+        const x = (i / (dataPoints.length - 1)) * w;
+        const y = h - (((point - min) / range) * (h - 4) + 2); // 2px margin
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+  </script>
+  <script src="tracker.js"></script>
+</body>
+</html>

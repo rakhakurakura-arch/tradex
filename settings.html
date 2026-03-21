@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Settings</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content" style="max-width: 800px; margin: 0 auto;">
+        
+        <div class="d-flex justify-between align-center mb-5 flex-wrap gap-3">
+          <div>
+            <h1 class="mb-1"><i class="fas fa-cog text-muted mr-2"></i> Settings</h1>
+            <p class="text-muted">Manage your preferences, API keys, and account security.</p>
+          </div>
+        </div>
+
+        <!-- API Configuration -->
+        <div class="card mb-4">
+          <h3 class="fw-bold mb-4 border-bottom pb-2">AI Integrations</h3>
+          
+          <div class="d-flex gap-3 align-start mb-4">
+             <div class="logo-icon bg-secondary text-lg" style="width: 50px; height: 50px;">
+                <img src="https://groq.com/wp-content/uploads/2024/03/PBG-mark1-color.svg" alt="Groq" style="width: 30px;">
+             </div>
+             <div class="flex-1">
+                <div class="fw-bold mb-1">Groq LPU Inference Engine</div>
+                <p class="text-sm text-muted mb-3">Powering the TradeX Copilot, Sentiment Aggregator, and Journal analysis with ultra-low latency LLMs.</p>
+                <form id="groq-form">
+                   <div class="form-group mb-2">
+                     <label class="form-label">API Key</label>
+                     <div style="position: relative;">
+                        <input type="password" id="groq-key-input" class="form-control" placeholder="gsk_..." autocomplete="off">
+                        <button type="button" class="btn btn-secondary btn-sm" id="toggle-groq-key" style="position:absolute; right:5px; top:5px; padding: 0.3rem 0.6rem;">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                     </div>
+                   </div>
+                   <div class="d-flex justify-between align-center">
+                      <a href="https://console.groq.com/keys" target="_blank" class="text-sm text-blue hover-text-current"><i class="fas fa-external-link-alt mr-1"></i> Get API Key</a>
+                      <button type="submit" class="btn btn-primary btn-sm">Save Key</button>
+                   </div>
+                </form>
+             </div>
+          </div>
+        </div>
+
+        <!-- App Preferences -->
+        <div class="card mb-4">
+          <h3 class="fw-bold mb-4 border-bottom pb-2">Preferences</h3>
+          
+          <form id="preferences-form">
+            <div class="form-group">
+               <label class="form-label">Default Local Currency</label>
+               <select id="pref-currency" class="form-control">
+                  <option value="USD">USD - US Dollar</option>
+                  <option value="IDR">IDR - Indonesian Rupiah</option>
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="GBP">GBP - British Pound</option>
+               </select>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Theme Mode</label>
+               <select id="pref-theme" class="form-control">
+                  <option value="dark">Dark Mode (Default)</option>
+                  <option value="light">Light Mode</option>
+               </select>
+            </div>
+            
+            <div class="form-group">
+               <label class="form-label">Trade Feed Push Notifications</label>
+               <div class="d-flex gap-2 mt-2">
+                 <label class="switch">
+                    <input type="checkbox" id="pref-notif">
+                    <span class="slider round"></span>
+                 </label>
+                 <span class="text-muted text-sm" style="line-height:24px;">Enable browser alerts for Whale sweeps</span>
+               </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Apply Preferences</button>
+          </form>
+        </div>
+
+        <!-- Account Data -->
+        <div class="card mb-4 border-red">
+          <h3 class="fw-bold mb-4 text-red border-bottom pb-2" style="border-color: rgba(255, 68, 68, 0.2);">Danger Zone</h3>
+          
+          <div class="d-flex justify-between align-center mb-3">
+             <div>
+                <div class="fw-bold mb-1">Clear Local Data</div>
+                <div class="text-sm text-muted">Delete all portofolios, journals, and cache from this browser.</div>
+             </div>
+             <button class="btn btn-outline text-red" id="btn-clear-data" style="border-color: var(--accent-red);">Purge Data</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

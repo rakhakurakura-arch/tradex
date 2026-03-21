@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Free Signals Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content" style="max-width: 1000px; margin: 0 auto;">
+        
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-primary mb-2"><i class="fas fa-gift"></i> COMMUNITY Access</div>
+            <h1 class="mb-1">Public Signal Feed</h1>
+            <p class="text-muted">Delayed alerts and basic technical setups available to all users.</p>
+          </div>
+          <div>
+             <a href="pricing.html" class="btn btn-outline text-green" style="border-color: var(--accent-green);"><i class="fas fa-crown"></i> Get Premium Real-time</a>
+          </div>
+        </div>
+
+        <div id="delay-banner" class="badge badge-yellow mb-4 p-3 text-center" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;">
+           <i class="fas fa-clock fa-spin"></i> Note: You are viewing delayed data (15 min lag). Pro members see signals instantly.
+        </div>
+
+        <!-- Metric Summary -->
+        <div class="grid grid-3 mb-4">
+          <div class="card text-center">
+             <div class="text-muted text-sm mb-1">Signals Today (Free)</div>
+             <h2 class="text-2xl fw-bold" id="free-sig-count">0</h2>
+          </div>
+          <div class="card text-center">
+             <div class="text-muted text-sm mb-1">Average Target Hit</div>
+             <h2 class="text-2xl fw-bold text-green" id="free-sig-accuracy">--%</h2>
+          </div>
+          <div class="card text-center">
+             <div class="text-muted text-sm mb-1">Market Bias</div>
+             <h2 class="text-2xl fw-bold" id="free-sig-bias">Analyzing...</h2>
+          </div>
+        </div>
+
+        <div class="d-flex justify-between align-center mb-3">
+           <h3 class="fw-bold">Latest Alpha</h3>
+           <button class="btn btn-secondary btn-sm" id="btn-refresh-free"><i class="fas fa-sync-alt"></i></button>
+        </div>
+
+        <!-- Feed List -->
+        <div id="free-feed-container" class="d-flex flex-column gap-3">
+           <!-- Skeletons -->
+           <div class="card"><div class="skeleton-chart" style="height:80px;"></div></div>
+           <div class="card"><div class="skeleton-chart" style="height:80px;"></div></div>
+           <div class="card"><div class="skeleton-chart" style="height:80px;"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="free-signals.js"></script>
+</body>
+</html>

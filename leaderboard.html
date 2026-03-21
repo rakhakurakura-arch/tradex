@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Global Leaderboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+     .rank-1 { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); font-size: 1.5rem; }
+     .rank-2 { color: #9ca3af; font-size: 1.3rem; }
+     .rank-3 { color: #b45309; font-size: 1.2rem; }
+  </style>
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content" style="max-width: 900px; margin: 0 auto;">
+        
+        <div class="d-flex justify-between align-center mb-5 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-yellow mb-2"><i class="fas fa-trophy text-yellow"></i> HALL OF FAME</div>
+            <h1 class="mb-1">Top Traders</h1>
+            <p class="text-muted">Global verified PnL leaderboards.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-secondary active">7 Days</button>
+            <button class="btn btn-secondary">30 Days</button>
+            <button class="btn btn-secondary">All Time</button>
+          </div>
+        </div>
+
+        <div class="card p-0" style="overflow: hidden;">
+           <div class="table-responsive" style="border:none; border-radius:0;">
+              <table>
+                 <thead>
+                    <tr>
+                       <th class="text-center" style="width: 60px;">Rank</th>
+                       <th>Trader</th>
+                       <th class="text-right">Win Rate</th>
+                       <th class="text-right">Total Trades</th>
+                       <th class="text-right">Net PnL (ROI)</th>
+                       <th class="text-center">Copy Trade</th>
+                    </tr>
+                 </thead>
+                 <tbody id="leaderboard-tbody">
+                    <!-- Populated by JS -->
+                 </tbody>
+              </table>
+           </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="leaderboard.js"></script>
+</body>
+</html>

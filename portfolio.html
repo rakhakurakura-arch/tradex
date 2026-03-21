@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <h1 class="mb-1">My Portfolio</h1>
+            <p class="text-muted">Track your crypto assets in real-time</p>
+          </div>
+          <button class="btn btn-primary" onclick="document.getElementById('add-asset-modal').style.display='flex'">
+            <i class="fas fa-plus"></i> Add Asset
+          </button>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-3 mb-4">
+          <div class="card" style="background: linear-gradient(135deg, var(--bg-card) 0%, rgba(0, 212, 170, 0.05) 100%);">
+            <h3 class="text-muted fw-bold mb-2 text-sm">TOTAL BALANCE</h3>
+            <div class="d-flex justify-between align-end">
+              <div>
+                <h2 id="port-total-usd" style="font-size: 2.2rem;" class="mb-1">$0.00</h2>
+                <div id="port-total-idr" class="text-muted">Rp 0</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <h3 class="text-muted fw-bold mb-2 text-sm">TOTAL PROFIT/LOSS</h3>
+            <div class="d-flex justify-between align-end">
+              <div>
+                <h2 id="port-pnl-usd" style="font-size: 2.2rem;" class="mb-1">$0.00</h2>
+                <div class="d-flex align-center gap-2 mt-1">
+                  <span id="port-pnl-percent" class="badge">0.00%</span>
+                  <span class="text-muted text-sm">All Time</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="text-muted fw-bold mb-2 text-sm">BEST PERFORMER</h3>
+            <div class="d-flex justify-between align-center mt-3" id="port-best-card">
+               <div class="text-muted">Add assets to your portfolio</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-4">
+          <!-- Main Holdings Table -->
+          <div class="card" style="grid-column: span 2; padding: 0; overflow: hidden;">
+            <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);" class="d-flex justify-between align-center">
+              <h3 class="fw-bold">Your Assets</h3>
+              <button class="btn btn-secondary btn-sm" id="export-csv"><i class="fas fa-download"></i> CSV</button>
+            </div>
+            <div class="table-responsive" style="border:none; border-radius:0;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Balance</th>
+                    <th class="text-right">Value</th>
+                    <th class="text-right">Allocation</th>
+                    <th class="text-right">P&L</th>
+                    <th class="text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="holdings-tbody">
+                  <tr><td colspan="7" class="text-center py-5 text-muted">Portfolio is empty. Click 'Add Asset' to begin.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Allocation Chart -->
+          <div class="card d-flex flex-column">
+            <h3 class="fw-bold mb-4">Allocation</h3>
+            <div class="flex-1 d-flex align-center justify-center p-3 relative" style="min-height: 250px;">
+              <canvas id="allocation-chart"></canvas>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Asset Modal -->
+  <div id="add-asset-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(5px); z-index:999; align-items:center; justify-content:center; padding:1rem;">
+     <div class="card" style="width:100%; max-width:450px;">
+        <div class="d-flex justify-between align-center mb-4">
+           <h3 class="fw-bold">Add New Holding</h3>
+           <button class="btn btn-secondary btn-sm" onclick="document.getElementById('add-asset-modal').style.display='none'" style="border:none; background:transparent;">
+             <i class="fas fa-times text-lg"></i>
+           </button>
+        </div>
+        
+        <form id="add-asset-form">
+          <div class="form-group">
+            <label class="form-label">Search Coin</label>
+            <input type="text" id="coin-search-input" class="form-control" placeholder="e.g., Bitcoin or BTC" autocomplete="off" required>
+            <div id="coin-search-results" class="mt-1" style="display:none; position:absolute; z-index:10; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; width:calc(100% - 3rem); max-height:200px; overflow-y:auto; box-shadow:var(--shadow-lg);"></div>
+            <input type="hidden" id="selected-coin-id">
+            <input type="hidden" id="selected-coin-symbol">
+            <input type="hidden" id="selected-coin-name">
+          </div>
+          
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label class="form-label">Amount (Tokens)</label>
+              <input type="number" id="asset-amount" class="form-control" step="any" min="0" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Avg. Buy Price ($)</label>
+              <input type="number" id="asset-price" class="form-control" step="any" min="0" placeholder="0.00" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block mt-2">Save Asset</button>
+        </form>
+     </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="portfolio.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Sentiment Aggregator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-purple mb-2"><i class="fas fa-broadcast-tower"></i> MARKET PULSE</div>
+            <h1 class="mb-1">AI Sentiment Aggregator</h1>
+            <p class="text-muted">Real-time news processing with NLP sentiment scoring.</p>
+          </div>
+          <button class="btn btn-secondary" id="refresh-news">
+            <i class="fas fa-sync-alt"></i> Refresh Feed
+          </button>
+        </div>
+
+        <div class="grid grid-3 mb-4">
+          <!-- Overall Pulse -->
+          <div class="card d-flex flex-column justify-center align-center text-center">
+             <div class="text-muted text-sm mb-2">GLOBAL NEWS SENTIMENT</div>
+             <h2 id="global-sentiment-score" class="text-3xl fw-bold mb-1">--</h2>
+             <div id="global-sentiment-label" class="badge">ANALYZING...</div>
+          </div>
+          
+          <!-- Keyword Cloud Proxy -->
+          <div class="card" style="grid-column: span 2;">
+             <h3 class="fw-bold mb-3 text-sm text-muted">Trending Narratives</h3>
+             <div id="narrative-tags" class="d-flex flex-wrap gap-2 mt-2">
+                <span class="skeleton-text-short text-lg w-20"></span>
+                <span class="skeleton-text-short text-lg w-25"></span>
+                <span class="skeleton-text-short text-lg w-30"></span>
+             </div>
+             
+             <!-- AI Summary of current meta -->
+             <div class="mt-4 p-3" style="background:var(--bg-secondary); border-radius:8px; border-left: 3px solid var(--accent-blue);">
+                <div class="d-flex gap-2 align-center mb-1">
+                   <i class="fas fa-robot text-blue text-sm"></i>
+                   <span class="fw-bold text-sm">AI Narrative Summary</span>
+                </div>
+                <div id="narrative-summary" class="text-sm">
+                   Gathering latest headlines to synthesize current market driving factors...
+                </div>
+             </div>
+          </div>
+        </div>
+
+        <div class="grid grid-3 mb-4">
+          
+          <!-- Feed List -->
+          <div class="card p-0" style="grid-column: span 2; overflow: hidden; display: flex; flex-direction: column;">
+             <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);" class="d-flex justify-between align-center">
+               <h3 class="fw-bold">Latest Headlines</h3>
+               <div class="d-flex gap-2">
+                   <button class="btn btn-secondary btn-sm" id="btn-feed-all" class="active">All News</button>
+                   <button class="btn btn-secondary btn-sm text-green" id="btn-feed-bull">Bullish</button>
+                   <button class="btn btn-secondary btn-sm text-red" id="btn-feed-bear">Bearish</button>
+               </div>
+             </div>
+             <div id="news-feed-container" style="flex: 1; overflow-y: auto; max-height: 800px;">
+                <!-- Skeleton rows -->
+                <div class="p-3 border-bottom"><div class="skeleton-chart" style="height:60px;"></div></div>
+                <div class="p-3 border-bottom"><div class="skeleton-chart" style="height:60px;"></div></div>
+                <div class="p-3 border-bottom"><div class="skeleton-chart" style="height:60px;"></div></div>
+             </div>
+          </div>
+
+          <!-- Asset Split Chart -->
+          <div class="card d-flex flex-column">
+             <h3 class="fw-bold mb-4">Mention Volatility</h3>
+             <div class="flex-1 d-flex align-center justify-center relative" style="min-height: 250px;">
+               <canvas id="mention-chart"></canvas>
+             </div>
+             <div class="mt-4 text-sm text-muted text-center">
+               Tokens receiving the most media coverage in the last 24 hours.
+             </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="sentiment.js"></script>
+</body>
+</html>

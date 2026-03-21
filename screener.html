@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Screener</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .filter-group { background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); }
+    .filter-label { font-size: 0.85rem; color: var(--text-muted); font-weight: bold; margin-bottom: 0.5rem; display: block; }
+  </style>
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-purple mb-2"><i class="fas fa-filter"></i> MARKET DISCOVERY</div>
+            <h1 class="mb-1">Crypto Screener</h1>
+            <p class="text-muted">Filter assets by performance, volume, and market cap to find the best setups.</p>
+          </div>
+          <button class="btn btn-secondary" id="btn-reset-filters">
+            <i class="fas fa-undo"></i> Reset Filters
+          </button>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card mb-4">
+          <h3 class="fw-bold mb-3">Custom Filters</h3>
+          <div class="grid grid-4 gap-3">
+             
+            <!-- Price Performance -->
+            <div class="filter-group">
+               <span class="filter-label">24h Performance</span>
+               <select id="filter-perf" class="form-control text-sm">
+                  <option value="ALL">Any Performance</option>
+                  <option value="GAINERS_10">Top Gainers (>10%)</option>
+                  <option value="GAINERS_5">Gainers (>5%)</option>
+                  <option value="LOSERS_5">Losers (<-5%)</option>
+                  <option value="LOSERS_10">Top Losers (<-10%)</option>
+               </select>
+            </div>
+
+            <!-- Volume -->
+            <div class="filter-group">
+               <span class="filter-label">24h Volume</span>
+               <select id="filter-vol" class="form-control text-sm">
+                  <option value="ALL">Any Volume</option>
+                  <option value="HIGH">High (> $100M)</option>
+                  <option value="MED">Medium ($10M - $100M)</option>
+                  <option value="LOW">Micro (< $10M)</option>
+               </select>
+            </div>
+
+            <!-- Market Cap -->
+            <div class="filter-group">
+               <span class="filter-label">Market Cap</span>
+               <select id="filter-mcap" class="form-control text-sm">
+                  <option value="ALL">Any Market Cap</option>
+                  <option value="LARGE">Large Cap (> $10B)</option>
+                  <option value="MID">Mid Cap ($1B - $10B)</option>
+                  <option value="SMALL">Small Cap (< $1B)</option>
+               </select>
+            </div>
+            
+            <!-- Price Range -->
+            <div class="filter-group">
+               <span class="filter-label">Price Range</span>
+               <select id="filter-price" class="form-control text-sm">
+                  <option value="ALL">Any Price</option>
+                  <option value="PENNY">Penny (< $1)</option>
+                  <option value="MID">Mid ($1 - $100)</option>
+                  <option value="HIGH">High (> $100)</option>
+               </select>
+            </div>
+
+          </div>
+          <div class="d-flex justify-between align-center mt-3 pt-3" style="border-top: 1px solid var(--border);">
+             <div class="text-sm text-muted">Showing <span id="matches-count" class="fw-bold text-primary">0</span> assets matching criteria.</div>
+          </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="card p-0" style="overflow: hidden;">
+          <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);" class="d-flex justify-between align-center">
+            <h3 class="fw-bold">Screener Results</h3>
+            <div class="form-group mb-0" style="max-width: 250px;">
+               <input type="text" id="screener-search" class="form-control btn-sm" placeholder="Search Results...">
+            </div>
+          </div>
+          <div class="table-responsive" style="border:none; border-radius:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Asset</th>
+                  <th class="text-right cursor-pointer" onclick="sortScreener('price')">Price <i class="fas fa-sort text-muted text-xs"></i></th>
+                  <th class="text-right cursor-pointer" onclick="sortScreener('change')">24h% <i class="fas fa-sort text-muted text-xs"></i></th>
+                  <th class="text-right cursor-pointer d-none-mobile" onclick="sortScreener('vol')">Volume <i class="fas fa-sort text-muted text-xs"></i></th>
+                  <th class="text-right cursor-pointer d-none-mobile" onclick="sortScreener('mcap')">Market Cap <i class="fas fa-sort text-muted text-xs"></i></th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="screener-tbody">
+                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin mr-2"></i> Loading market data array...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="screener.js"></script>
+</body>
+</html>

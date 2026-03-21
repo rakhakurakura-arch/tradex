@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Risk Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-yellow mb-2"><i class="fas fa-shield-alt"></i> CAPITAL PRESERVATION</div>
+            <h1 class="mb-1">AI Risk Manager</h1>
+            <p class="text-muted">Calculate position sizing, validate Risk/Reward, and stress test scenarios.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-2 mb-4">
+          
+          <!-- Position Calculator -->
+          <div class="card d-flex flex-column">
+            <h3 class="fw-bold mb-4">Trade Calculator</h3>
+            
+            <!-- Warning Banner -->
+            <div id="leverage-warning" class="badge badge-red mb-4 p-2 text-center" style="display: none; width: 100%;">
+               HIGH RISK: Liquidation potential extremely high.
+            </div>
+
+            <form id="risk-calc-form" class="flex-1">
+              <div class="grid grid-2">
+                <div class="form-group">
+                  <label class="form-label">Capital (USD)</label>
+                  <input type="number" id="risk-capital" class="form-control" value="1000" min="1" step="any" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Leverage (1x - 125x)</label>
+                  <input type="number" id="risk-leverage" class="form-control" value="1" min="1" max="125" required>
+                </div>
+              </div>
+
+              <div class="grid grid-3">
+                <div class="form-group">
+                  <label class="form-label">Entry Price</label>
+                  <input type="number" id="risk-entry" class="form-control" placeholder="0.00" step="any" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label text-green">Target (TP)</label>
+                  <input type="number" id="risk-target" class="form-control" placeholder="0.00" step="any" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label text-red">Stop Loss</label>
+                  <input type="number" id="risk-sl" class="form-control" placeholder="0.00" step="any" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Exchange Fee (%) - Total Round Trip</label>
+                <input type="number" id="risk-fee" class="form-control" value="0.1" step="0.01">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block mt-2">Calculate Position</button>
+            </form>
+          </div>
+
+          <!-- Trade Assessment Output -->
+          <div class="card" id="risk-output-card" style="display: flex; flex-direction: column;">
+            <h3 class="fw-bold mb-4">Trade Assessment</h3>
+            
+            <div class="text-center mb-4" id="risk-assessment-rating">
+               <div class="text-muted text-sm mb-2">AI RATING</div>
+               <div class="badge badge-secondary text-lg">AWAITING INPUT</div>
+            </div>
+
+            <div class="grid grid-2 text-sm gap-3 mb-4 flex-1">
+              <div class="p-3" style="background:var(--bg-secondary); border-radius:8px;">
+                 <div class="text-muted mb-1">Risk / Reward Ratio</div>
+                 <div class="fw-bold text-lg" id="out-rr">0.00</div>
+              </div>
+              <div class="p-3" style="background:var(--bg-secondary); border-radius:8px;">
+                 <div class="text-muted mb-1">Position Size (Notional)</div>
+                 <div class="fw-bold text-lg" id="out-size">$0.00</div>
+              </div>
+              <div class="p-3 border" style="border-radius:8px; border-color:var(--accent-green);">
+                 <div class="text-muted mb-1">Max Profit</div>
+                 <div class="fw-bold text-lg text-green" id="out-profit">$0.00</div>
+              </div>
+              <div class="p-3 border" style="border-radius:8px; border-color:var(--accent-red);">
+                 <div class="text-muted mb-1">Max Loss</div>
+                 <div class="fw-bold text-lg text-red" id="out-loss">$0.00</div>
+              </div>
+              <div class="p-3" style="background:var(--bg-secondary); border-radius:8px;">
+                 <div class="text-muted mb-1">Liquidation Price</div>
+                 <div class="fw-bold" id="out-liq">$0.00</div>
+              </div>
+              <div class="p-3" style="background:var(--bg-secondary); border-radius:8px;">
+                 <div class="text-muted mb-1">Estimated Fees</div>
+                 <div class="fw-bold" id="out-fees">$0.00</div>
+              </div>
+            </div>
+
+            <button class="btn btn-outline btn-block mt-auto" id="save-history-btn" disabled>Save to History</button>
+          </div>
+        </div>
+
+        <!-- AI Portfolio Stress Tester -->
+        <div class="card mb-4" style="border: 1px solid var(--accent-blue);">
+          <div class="d-flex justify-between align-start flex-wrap gap-4">
+            <div style="flex:1; min-width: 300px;">
+              <h3 class="fw-bold mb-2"><i class="fas fa-brain text-blue mr-2"></i> Portfolio Stress Test</h3>
+              <p class="text-muted mb-4">Simulate tail-risk events. "If BTC drops X%, how much does your portfolio lose?"</p>
+              
+              <div class="d-flex gap-2">
+                <input type="number" id="stress-drop-pct" class="form-control" placeholder="Drop % (e.g. 20)" style="width: 150px;" min="1" max="99">
+                <button class="btn btn-primary" id="run-stress-btn">Run Simulation</button>
+              </div>
+            </div>
+
+            <div style="flex:1; min-width: 300px; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
+              <div id="stress-results">
+                 <div class="text-muted text-center py-4">Run a simulation to see estimated impact.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Calculation History -->
+        <div class="card p-0" style="overflow: hidden;">
+           <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);">
+             <h3 class="fw-bold">Calculator History</h3>
+           </div>
+           <div class="table-responsive" style="border:none; border-radius:0;">
+             <table>
+               <thead>
+                 <tr>
+                   <th>Date</th>
+                   <th class="text-right">Entry</th>
+                   <th class="text-right">Lev</th>
+                   <th class="text-right">Target</th>
+                   <th class="text-right">Stop</th>
+                   <th class="text-right">R/R</th>
+                   <th class="text-center">Verdict</th>
+                 </tr>
+               </thead>
+               <tbody id="risk-history-tbody">
+                 <tr><td colspan="7" class="text-center py-5 text-muted">No history saved.</td></tr>
+               </tbody>
+             </table>
+           </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="risk-calculator.js"></script>
+</body>
+</html>

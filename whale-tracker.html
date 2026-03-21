@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Whale Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content">
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-yellow mb-2"><i class="fas fa-water"></i> INSTITUTIONAL FLOWS</div>
+            <h1 class="mb-1">Whale Tracker</h1>
+            <p class="text-muted">Real-time alerts for massive network transfers and exchange flows over $5M.</p>
+          </div>
+          <div class="d-flex gap-2 align-center bg-secondary p-2" style="border-radius: 8px;">
+             <span class="text-sm fw-bold">Live Feed</span>
+             <label class="switch" style="margin-bottom:0;">
+                <input type="checkbox" id="live-feed-toggle" checked>
+                <span class="slider round"></span>
+             </label>
+          </div>
+        </div>
+
+        <!-- Metric Summary -->
+        <div class="grid grid-3 mb-4">
+          <div class="card d-flex align-center gap-3">
+             <div class="logo-icon text-lg bg-red" style="width: 50px; height: 50px; flex-shrink:0;">
+               <i class="fas fa-sign-in-alt text-black"></i>
+             </div>
+             <div>
+               <div class="text-muted text-sm mb-1">Exchange Inflows (1h)</div>
+               <div class="fw-bold text-lg" id="whale-inflow">Scanning...</div>
+               <div class="text-red text-xs mt-1">Bearish pressure</div>
+             </div>
+          </div>
+          <div class="card d-flex align-center gap-3">
+             <div class="logo-icon text-lg bg-green" style="width: 50px; height: 50px; flex-shrink:0;">
+               <i class="fas fa-sign-out-alt text-black"></i>
+             </div>
+             <div>
+               <div class="text-muted text-sm mb-1">Exchange Outflows (1h)</div>
+               <div class="fw-bold text-lg" id="whale-outflow">Scanning...</div>
+               <div class="text-green text-xs mt-1">Bullish accumulation</div>
+             </div>
+          </div>
+          <div class="card d-flex align-center gap-3">
+             <div class="logo-icon text-lg" style="width: 50px; height: 50px; background:var(--bg-surface); flex-shrink:0;">
+               <i class="fas fa-link text-blue"></i>
+             </div>
+             <div>
+               <div class="text-muted text-sm mb-1">Unknown Transfers</div>
+               <div class="fw-bold text-lg" id="whale-unknown">Scanning...</div>
+               <div class="text-muted text-xs mt-1">OTC / Cold Storage</div>
+             </div>
+          </div>
+        </div>
+
+        <div class="card p-0" style="overflow: hidden;">
+          <div style="padding: 1.5rem; border-bottom: 1px solid var(--border);" class="d-flex justify-between align-center flex-wrap gap-2">
+            <h3 class="fw-bold">Latest Huge Transactions</h3>
+            <div class="d-flex gap-2">
+               <button class="btn btn-secondary btn-sm" id="btn-filter-all" class="active">All Flows</button>
+               <button class="btn btn-secondary btn-sm" id="btn-filter-tcex">To Exchange</button>
+               <button class="btn btn-secondary btn-sm" id="btn-filter-fcex">From Exchange</button>
+            </div>
+          </div>
+          <div class="table-responsive" style="border:none; border-radius:0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time / Block</th>
+                  <th>Amount</th>
+                  <th>Asset</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th class="text-center">Impact</th>
+                </tr>
+              </thead>
+              <tbody id="whale-tbody">
+                <!-- Generating synthetically based on proxy restrictions -->
+                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fas fa-spinner fa-spin mr-2"></i> Connecting to blockchain ledgers...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="whale-tracker.js"></script>
+</body>
+</html>

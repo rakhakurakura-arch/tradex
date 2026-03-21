@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Breaking News</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .news-card {
+       padding: 1.5rem;
+       border-bottom: 1px solid var(--border);
+       transition: background 0.2s;
+    }
+    .news-card:hover {
+       background: var(--bg-surface);
+    }
+    .news-meta {
+       font-size: 0.8rem;
+       color: var(--text-muted);
+       margin-bottom: 0.5rem;
+    }
+    .news-title {
+       font-size: 1.1rem;
+       font-weight: bold;
+       margin-bottom: 0.8rem;
+       color: var(--text-primary);
+       text-decoration: none;
+    }
+    .news-title:hover {
+       color: var(--accent-blue);
+    }
+  </style>
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="app-container">
+    <div id="sidebar-container"></div>
+    <div class="main-wrapper">
+      <div id="navbar-container"></div>
+
+      <div class="page-content" style="max-width: 1000px; margin: 0 auto;">
+        
+        <div class="d-flex justify-between align-center mb-4 flex-wrap gap-3">
+          <div>
+            <div class="badge badge-primary mb-2"><i class="fas fa-newspaper"></i> 24/7 COVERAGE</div>
+            <h1 class="mb-1">Breaking News</h1>
+            <p class="text-muted">Live crypto headlines from top global sources.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <!-- Search -->
+            <div class="form-group mb-0" style="width: 250px;">
+               <input type="text" id="news-search" class="form-control" placeholder="Search keywords...">
+            </div>
+            <button class="btn btn-secondary" id="btn-refresh-news">
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="card p-0" style="overflow: hidden;">
+           <div class="p-3 border-bottom bg-secondary d-flex gap-2 overflow-x-auto" id="news-filters">
+              <button class="btn btn-secondary btn-sm active" data-filter="">Top Stories</button>
+              <button class="btn btn-secondary btn-sm no-bg" data-filter="ETF">ETF</button>
+              <button class="btn btn-secondary btn-sm no-bg" data-filter="SEC">Regulation</button>
+              <button class="btn btn-secondary btn-sm no-bg" data-filter="Hack">Exploits</button>
+              <button class="btn btn-secondary btn-sm no-bg" data-filter="Airdrop">Airdrops</button>
+           </div>
+           
+           <div id="news-feed-main">
+              <!-- Skeletons -->
+              <div class="news-card"><div class="skeleton-chart" style="height: 60px;"></div></div>
+              <div class="news-card"><div class="skeleton-chart" style="height: 60px;"></div></div>
+              <div class="news-card"><div class="skeleton-chart" style="height: 60px;"></div></div>
+              <div class="news-card"><div class="skeleton-chart" style="height: 60px;"></div></div>
+           </div>
+           
+           <div class="p-4 text-center border-top">
+              <button class="btn btn-outline" id="btn-load-more" style="display:none;">Load More Stories</button>
+           </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="news.js"></script>
+</body>
+</html>

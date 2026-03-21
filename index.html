@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeX AI | Trade Smarter with AI</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <!-- Google Fonts Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ticker Tape -->
+  <div class="ticker-tape">
+    <div class="ticker-content" id="landing-ticker">
+      <!-- Injected by landing.js -->
+      <div class="ticker-item"><i class="fas fa-spinner fa-spin"></i> Loading live markets...</div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg"></div>
+    
+    <div class="navbar" style="position: absolute; top:0; left:0; right:0; background: transparent; border: none; padding: 1rem 4rem;">
+      <div class="logo">
+        <div class="logo-icon">TX</div>
+        <span style="font-size: 1.5rem">TradeX AI</span>
+      </div>
+      <div>
+        <a href="login.html" class="btn btn-outline" style="margin-right: 1rem;">Log In</a>
+        <a href="register.html" class="btn btn-primary">Start Trading Free</a>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="badge badge-green mb-3" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+        <i class="fas fa-robot"></i> Llama 3.3 70b Powered
+      </div>
+      
+      <h1 class="hero-title">Trade Smarter with <span class="text-gradient">AI Precision</span></h1>
+      <p class="hero-subtitle">The first all-in-one crypto platform where institutional-grade AI analyzes the market, so you don't have to.</p>
+      
+      <div class="d-flex justify-center gap-2 mb-5 flex-wrap">
+        <a href="register.html" class="btn btn-primary btn-lg"><i class="fas fa-rocket"></i> Get Started Free</a>
+        <a href="#features" class="btn btn-secondary btn-lg">Explore Features</a>
+      </div>
+
+      <!-- Live Price Display -->
+      <div class="card mt-4" style="background: rgba(22, 22, 22, 0.6); backdrop-filter: blur(10px); display: inline-block; text-align: left; border: 1px solid var(--border);">
+        <div class="d-flex gap-4 p-2">
+          <div id="hero-btc">
+            <div class="text-muted text-sm fw-bold">BITCOIN (BTC)</div>
+            <div class="d-flex align-center gap-2 mt-1">
+              <span class="text-lg fw-bold skeleton-text-short h-auto" id="btc-price">Loading...</span>
+              <span class="badge badge-green" id="btc-change">--%</span>
+            </div>
+          </div>
+          <div style="width: 1px; background: var(--border);"></div>
+          <div id="hero-eth">
+            <div class="text-muted text-sm fw-bold">ETHEREUM (ETH)</div>
+            <div class="d-flex align-center gap-2 mt-1">
+              <span class="text-lg fw-bold skeleton-text-short h-auto" id="eth-price">Loading...</span>
+              <span class="badge badge-green" id="eth-change">--%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="section-padding" style="background-color: var(--bg-card);">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+      <div class="text-center mb-5">
+        <div class="badge badge-blue mb-2">FEATURES</div>
+        <h2 class="section-title" style="margin-bottom: 1rem;">Your Unfair Advantage</h2>
+        <p class="text-muted text-lg">Built for traders who demand absolute precision and data superiority.</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="logo-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="fas fa-brain"></i></div>
+          <h3 class="mb-2">AI Trading Signals</h3>
+          <p class="text-muted">Real-time BUY/SELL recommendations backed by deep sentiment and technical analysis models.</p>
+        </div>
+        <div class="card">
+          <div class="logo-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem; background: var(--accent-blue); color: #fff;"><i class="fas fa-water"></i></div>
+          <h3 class="mb-2">Whale Tracker</h3>
+          <p class="text-muted">Monitor large institutional movements instantly to stay ahead of sudden market dumps or pumps.</p>
+        </div>
+        <div class="card">
+          <div class="logo-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem; background: var(--accent-red); color: #fff;"><i class="fas fa-shield-alt"></i></div>
+          <h3 class="mb-2">Risk Manager AI</h3>
+          <p class="text-muted">Calculate R/R ratios, configure safe leverage, and stress test your portfolio against flash crashes.</p>
+        </div>
+        <div class="card">
+          <div class="logo-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem; background: var(--accent-yellow); color: #000;"><i class="fas fa-flag"></i></div>
+          <h3 class="mb-2">Indonesian Market Hub</h3>
+          <p class="text-muted">Real-time IDR conversions, exchange spread comparisons (Indodax, Tokocrypto), and Crypto Tax calculators.</p>
+        </div>
+        <div class="card">
+          <div class="logo-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem; background: #a855f7; color: #fff;"><i class="fas fa-tachometer-alt"></i></div>
+          <h3 class="mb-2">Pro Screener</h3>
+          <p class="text-muted">Filter thousands of tokens by RSI, Volume spikes, and custom AI metrics exactly to your edge.</p>
+        </div>
+        <div class="card">
+          <div class="logo-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem; background: #ec4899; color: #fff;"><i class="fas fa-book"></i></div>
+          <h3 class="mb-2">Smart Journaling</h3>
+          <p class="text-muted">Auto-track your equity curve and P&L while our AI models analyze your mistakes and optimize routines.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section-padding">
+    <div class="container" style="max-width: 1000px; margin: 0 auto;">
+      <h2 class="section-title">Transparent Pricing</h2>
+      
+      <div class="grid grid-3">
+        <!-- Free -->
+        <div class="card text-center" style="border: 1px solid var(--border);">
+          <h3 class="mb-2 text-muted fw-bold">FREE</h3>
+          <div class="mb-4"><span style="font-size: 3rem; font-weight: 800;">$0</span><span class="text-muted">/mo</span></div>
+          <ul class="text-left mb-4" style="list-style: none;">
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Basic Tracker</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Portfolio Viewer</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> 5 Free Signals/Day</li>
+            <li class="mb-2 opacity-50"><i class="fas fa-times text-muted mr-2" style="width:20px;"></i> Groq AI Copilot</li>
+          </ul>
+          <a href="register.html" class="btn btn-outline btn-block">Sign Up Free</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="card text-center" style="border: 2px solid var(--accent-green); transform: scale(1.05); position: relative;">
+          <div style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--accent-green); color: #000; padding: 0.2rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">MOST POPULAR</div>
+          <h3 class="mb-2 text-green fw-bold mt-2">PRO / IDR</h3>
+          <div class="mb-4"><span style="font-size: 2.2rem; font-weight: 800;">Rp 99K</span><span class="text-muted">/mo</span></div>
+          <ul class="text-left mb-4" style="list-style: none;">
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Everything in Free</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Unlimited Signals</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Whale Tracker</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> AI Chat Copilot</li>
+          </ul>
+          <a href="register.html" class="btn btn-primary btn-block">Go Pro</a>
+        </div>
+
+        <!-- Elite -->
+        <div class="card text-center" style="border: 1px solid var(--border);">
+          <h3 class="mb-2 text-warning fw-bold" style="color: var(--accent-yellow);">ELITE</h3>
+          <div class="mb-4"><span style="font-size: 2.2rem; font-weight: 800;">Rp 299K</span><span class="text-muted">/mo</span></div>
+          <ul class="text-left mb-4" style="list-style: none;">
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Priority AI Queries</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Pro Screener Filters</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> Custom API Access</li>
+            <li class="mb-2"><i class="fas fa-check text-green mr-2" style="width:20px;"></i> 1-on-1 Support</li>
+          </ul>
+          <a href="register.html" class="btn btn-secondary btn-block">Get Elite</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section-padding" style="background-color: var(--bg-card);">
+    <div class="container" style="max-width: 800px; margin: 0 auto;">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      
+      <div class="faq-container">
+        <!-- Generates via JS for interaction -->
+        <div class="card mb-3" style="cursor:pointer;" onclick="this.classList.toggle('active')">
+          <div class="d-flex justify-between align-center">
+            <h4 class="fw-bold">How accurate are the AI signals?</h4>
+            <i class="fas fa-chevron-down text-muted"></i>
+          </div>
+          <div class="faq-content mt-2 text-muted" style="display: none; padding-top: 1rem; border-top: 1px solid var(--border);">
+            Our signals are powered by the Groq Llama 3.3 70b model, analyzing real-time price action, RSI, MACD, and sentiment. While highly accurate for pattern recognition, always trade responsibly.
+          </div>
+        </div>
+        
+        <div class="card mb-3" style="cursor:pointer;" onclick="this.classList.toggle('active')">
+          <div class="d-flex justify-between align-center">
+            <h4 class="fw-bold">Do I need my own API Key?</h4>
+            <i class="fas fa-chevron-down text-muted"></i>
+          </div>
+          <div class="faq-content mt-2 text-muted" style="display: none; padding-top: 1rem; border-top: 1px solid var(--border);">
+            Yes, for personalized AI analysis and copilot features, simply go to your Settings and paste your free Groq API key. Your key is stored securely in your browser's local storage.
+          </div>
+        </div>
+      </div>
+      
+      <style>
+        .faq-container .card.active .faq-content { display: block !important; }
+        .faq-container .card.active .fa-chevron-down { transform: rotate(180deg); transition: 0.3s; }
+      </style>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background-color: var(--bg-primary); padding: 4rem 2rem 2rem; border-top: 1px solid var(--border);">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+      <div class="grid grid-4 mb-4">
+        <div>
+          <div class="logo mb-3">
+            <div class="logo-icon">TX</div>
+            <span>TradeX AI</span>
+          </div>
+          <p class="text-muted mb-3">Trade Smarter with AI. The ultimate terminal for modern crypto investors.</p>
+        </div>
+        <div>
+          <h4 class="mb-3">Platform</h4>
+          <div class="d-flex flex-column gap-1">
+            <a href="dashboard.html" class="text-muted">Dashboard</a>
+            <a href="signals.html" class="text-muted">Pro Signals</a>
+            <a href="pricing" class="text-muted">Pricing</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="mb-3">Resources</h4>
+          <div class="d-flex flex-column gap-1">
+            <a href="#" class="text-muted">API Docs</a>
+            <a href="#" class="text-muted">Help Center</a>
+            <a href="#" class="text-muted">Community</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="mb-3">Legal</h4>
+          <div class="d-flex flex-column gap-1">
+            <a href="#" class="text-muted">Terms of Service</a>
+            <a href="#" class="text-muted">Privacy Policy</a>
+            <a href="#" class="text-muted">Disclaimer</a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center text-muted" style="padding-top: 2rem; border-top: 1px solid var(--border);">
+        &copy; 2026 TradeX AI. All rights reserved. Not financial advice.
+      </div>
+    </div>
+  </footer>
+
+  <script src="core.js"></script>
+  <script src="api.js"></script>
+  <script src="landing.js"></script>
+</body>
+</html>
